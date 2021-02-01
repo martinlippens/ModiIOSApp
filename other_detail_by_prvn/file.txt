@@ -1,0 +1,9 @@
+Need to be work on bellow library
+react-native-timeline-listview and screen path: src/screens/Schedule/index.js
+
+keystore:
+key:modi
+pass: password
+
+Archticure: 
+1) Initial: Setting -> Service -> Basic Detail -> DateSet -> Success -> Upcoming ->

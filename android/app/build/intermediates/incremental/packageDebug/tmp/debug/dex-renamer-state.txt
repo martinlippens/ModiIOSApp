@@ -1,0 +1,4 @@
+#Mon Feb 01 12:17:35 IST 2021
+base.0=/Users/praveensingh/Documents/REACT_NATIVE/JHON_PROJECT/ModiIOSApp/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
