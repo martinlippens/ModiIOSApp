@@ -160,7 +160,7 @@ class Login extends Component {
         // if(this.state.emailValid||this.state.passwordValid) return
         console.log(this.state.email, this.state.password)
 
-        fetch('http://3.16.29.143/api/api_emailverify', {
+        fetch('http://52.14.114.118/api/api_emailverify', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

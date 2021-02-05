@@ -63,7 +63,7 @@ class Login extends Component {
         }
     }
     componentWillMount() {
-        fetch('http://3.16.29.143/api/api_complexlist', {
+        fetch('http://52.14.114.118/api/api_complexlist', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -249,38 +249,45 @@ class Login extends Component {
         if( this.state.firstnameValid && this.state.lastnameValid && this.state.phoneValid &&
             this.state.unitValid && this.state.complexValid && this.state.emailValid){
                 this.setState({ loginVaid: true })
-
-                fetch('http://3.16.29.143/api/api_signup', {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        email: this.state.email,
-                        firstname: this.state.firstname,
-                        lastname: this.state.lastname,
-                        phone: this.state.phone,
-                        complex_id: this.state.complex_id,
-                        apart_num: this.state.unit,
-                        password: this.state.password,
-                    }),
-                })
-                    .then((response) => response.json())
-                    .then((responseJson) => {
-                        console.log(responseJson)
-                        // this.setState({ modalVisible: true })
-                        // setTimeout(this.Goupcoimg, 3000)
-                        if(responseJson.data==="success"){
-                            this.props.navigation.navigate('Login');
-                        }
-                        if(responseJson.data==="failure"){
-                            alert('Email exist aleady!')
-                        }
+                if(this.state.password == '' && this.state.Cpassword == ''){
+                    alert('Input Error!')
+                }else if (this.state.password.length < 6) {
+                    alert('Password must be at least 6 character')
+                }else if(this.state.password != this.state.Cpassword){
+                    alert('Pasword and Confirm Password should be match!')
+                }else{
+                    fetch('http://52.14.114.118/api/api_signup', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: this.state.email,
+                            firstname: this.state.firstname,
+                            lastname: this.state.lastname,
+                            phone: this.state.phone,
+                            complex_id: this.state.complex_id,
+                            apart_num: this.state.unit,
+                            password: this.state.password,
+                        }),
                     })
-                    .catch((error) => {
-                        alert(error);
-                    });
+                        .then((response) => response.json())
+                        .then((responseJson) => {
+                            console.log(responseJson)
+                            // this.setState({ modalVisible: true })
+                            // setTimeout(this.Goupcoimg, 3000)
+                            if(responseJson.data==="success"){
+                                this.props.navigation.navigate('Login');
+                            }
+                            if(responseJson.data==="failure"){
+                                alert('Email exist aleady!')
+                            }
+                        })
+                        .catch((error) => {
+                            alert(error);
+                        });
+                }
         
         }else{
             alert("Input Error!")

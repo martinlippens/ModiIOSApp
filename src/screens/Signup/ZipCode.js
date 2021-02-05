@@ -232,7 +232,7 @@ export default class ZipCode extends Component {
         Keyboard.dismiss()
        this.setState({zipcode: name})
        
-        fetch('http://3.16.29.143/api/api_getzipcode', {
+        fetch('http://52.14.114.118/api/api_getzipcode', {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',

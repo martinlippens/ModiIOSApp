@@ -48,7 +48,7 @@ export default class Schedule extends Component {
         }
     }
     componentWillMount(){
-            fetch('http://3.16.29.143/api/api_getcleaner', {
+            fetch('http://52.14.114.118/api/api_getcleaner', {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',

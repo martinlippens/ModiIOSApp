@@ -208,7 +208,7 @@ class Login extends Component {
     }
     continue() {
 
-        fetch('http://3.16.29.143/api/api_signup', {
+        fetch('http://52.14.114.118/api/api_signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -274,7 +274,7 @@ class Login extends Component {
     Login() {
 
 
-        fetch('http://3.16.29.143/api/api_emailverify', {
+        fetch('http://52.14.114.118/api/api_emailverify', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

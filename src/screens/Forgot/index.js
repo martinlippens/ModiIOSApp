@@ -230,7 +230,7 @@ export default class Login extends Component {
 
             this.setState({btnSendStatus:true})
             //fetch(Config.API_ENDPOINT+'api_forgotpass', {
-            fetch('http://3.16.29.143/api/'+'api_forgotpass', {
+            fetch('http://52.14.114.118/api/'+'api_forgotpass', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',

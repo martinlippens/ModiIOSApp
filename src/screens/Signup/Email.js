@@ -139,7 +139,7 @@ export default class Login extends Component {
 
 
 
-        fetch('http://3.16.29.143/api/api_emailverify', {
+        fetch('http://52.14.114.118/api/api_emailverify', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -179,7 +179,7 @@ export default class Login extends Component {
             return
         }
 
-        fetch('http://3.16.29.143/api/api_setpassword', {
+        fetch('http://52.14.114.118/api/api_setpassword', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

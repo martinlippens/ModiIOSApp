@@ -95,7 +95,7 @@ class Login extends Component {
         )
     }
     setpassword() {
-        fetch('http://3.16.29.143/api/api_setpassword', {
+        fetch('http://52.14.114.118/api/api_setpassword', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -116,7 +116,7 @@ class Login extends Component {
     }
     Login() {
         
-        fetch('http://3.16.29.143/api/api_login', {
+        fetch('http://52.14.114.118/api/api_login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

@@ -349,7 +349,7 @@ class DateSet extends Component {
             cleanerMsg = "-";
         }
         
-        fetch('http://3.16.29.143/api/api_bookingstore', {
+        fetch('http://52.14.114.118/api/api_bookingstore', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
