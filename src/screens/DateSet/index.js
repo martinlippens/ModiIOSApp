@@ -367,7 +367,7 @@ class DateSet extends Component {
         })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log(responseJson)
+                console.warn('BOOKING_RESPONSE',responseJson)
                 if (responseJson.flag === "success") {
                     this.props.BookingInfoStore(data);
                     this.props.navigation.navigate('Success');

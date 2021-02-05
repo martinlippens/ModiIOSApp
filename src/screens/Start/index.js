@@ -60,14 +60,16 @@ class Start extends Component {
 
     }
     goLogin() {
-        this.props.navigation.navigate('Login')
+        //this.props.navigation.navigate('Login')
+        this.props.navigation.navigate('Schedule')
     }   
     animationFun = ()=>{
         this.setState({animationFlag:false})
     }
     Goupcoimg = () => {
         this.setState({ modalVisible: false })
-        this.props.navigation.navigate('Login');
+        //this.props.navigation.navigate('Login');
+        this.props.navigation.navigate('Schedule')
     }
 }
 

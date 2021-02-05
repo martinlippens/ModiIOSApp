@@ -16,16 +16,16 @@ import {
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/button';
-//import Timeline from 'react-native-timeline-listview'
+import Timeline from 'react-native-timeline-flatlist'
 class timeline extends Component {
     static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props)
-        const userInfo = this.props.userinfo;
+        //const userInfo = this.props.userinfo;
         this.state = {
-            userInfo: userInfo,
+            //userInfo: userInfo,
             timelineData: [
                 {
                     time: "Tue, Dec 22 09:00 AM",
@@ -61,10 +61,10 @@ class timeline extends Component {
             <View style={styles.container}>
                 <ScrollView>
                 <View style={styles.content}>
-                    <Text style={styles.serviceText}>Upcomings</Text>
+                    <Text style={styles.serviceText}>Schedule</Text>
                 </View>
                 
-                {/* <Timeline data={this.state.timelineData} timeContainerStyle={{minWidth:72, maxWidth:90}} innerCircle={'icon'} /> */}
+                <Timeline data={this.state.timelineData} timeContainerStyle={{minWidth:72, maxWidth:90}} innerCircle={'icon'} />
                 </ScrollView>
                 <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={styles.backIcon}>
                     <Image source={require('../../images/back.png')} style={styles.meunIcon} />
@@ -79,7 +79,7 @@ class timeline extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userinfo: state.userinfo.user
+        //userinfo: state.userinfo.user
     }
 }
 const mapDispatchToProps = (dispatch) => {

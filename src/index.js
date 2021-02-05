@@ -34,7 +34,6 @@ import Drawermenu from './screens/DrawMenu'
 import Signup from './screens/Signup';
 import Forgot from './screens/Forgot';
 
-import Schedule from './screens/Schedule';
 import Special from './screens/Special';
 import Success from './screens/Success';
 import AddressList from './screens/AddressList';
@@ -47,7 +46,13 @@ import PaymentForLogin from './screens/Payment/PaymentforLogin';
 import CleanerSignIn from './screens/Login/cleanerSignIn';
 import SelectCleaner from './screens/SelectCleaner';
 import SelectCleanerForLogin from './screens/SelectCleaner/SelectCleanerForLogin';
-import Feedback from './screens/Setting/Feedback'
+import Feedback from './screens/Setting/Feedback';
+
+//WORK BY PRAVEEN SINGH RATHORE (DATE : 05 FEB 21)
+import Schedule from './screens/Schedule';
+import History from './screens/History';
+import Help from './screens/Help';
+import Profile from './screens/Profile';
 // export default class App extends Component {
 //     render(){
        
@@ -101,6 +106,9 @@ const AppScreen = createStackNavigator({
         
         
         Schedule: {screen: Schedule},
+        History: {screen: History},
+        Help: {screen: Help},
+        Profile: {screen: Profile},
         
         AddressList: {screen: AddressList},
         ZipCode: {screen: ZipCode},
