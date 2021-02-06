@@ -155,7 +155,11 @@ class Setting extends Component {
                     end={{ x: 1, y: 0.8 }}
                     style={styles.menuheader}
                 >
-                    <TouchableOpacity style={styles.menuheader_view}>
+                    <TouchableOpacity style={styles.menuheader_view}
+                    onPress={() => {
+                        this._drawer.close()
+                        this.props.navigation.navigate("Profile")
+                    }}>
                         <View>
                             <Text style={styles.headerbtn_con}>{`${this.state.userInfo.userInfo.firstname} ${this.state.userInfo.userInfo.lastname}`}</Text>
                             <Text style={styles.headerbtn_credit}>1 credit available for December</Text>
@@ -176,7 +180,10 @@ class Setting extends Component {
                         }}>
                         <Text style={styles.menuText}>Upcoming Cleanings</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.menuView]}>
+                    <TouchableOpacity style={[styles.menuView]}
+                    onPress={() => 
+                        {  this._drawer.close()
+                    this.props.navigation.navigate("History")}}>
                         <Text style={styles.menuText}>History</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.menuView]}
@@ -195,9 +202,10 @@ class Setting extends Component {
                         <Text style={styles.menuText}>Password</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.menuView]}
-                        onPress={() => {
+                       onPress={() =>
+                        {  
                             this._drawer.close()
-                            //this.props.navigation.navigate('Feedback')
+                            this.props.navigation.navigate('Help')
                         }}>
                         <Text style={styles.menuText}>Help</Text>
                     </TouchableOpacity>
