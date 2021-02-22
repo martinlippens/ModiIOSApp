@@ -76,7 +76,7 @@ export default class Login extends Component {
         if(this.state.passwordValid) return
 
 
-        fetch('http://52.14.114.118/api/api_setpassword', {
+        fetch('http://18.221.234.213/api/api_setpassword', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',

@@ -63,7 +63,7 @@ class Login extends Component {
         }
     }
     componentWillMount() {
-        fetch('http://52.14.114.118/api/api_complexlist', {
+        fetch('http://18.221.234.213/api/api_complexlist', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -256,7 +256,7 @@ class Login extends Component {
                 }else if(this.state.password != this.state.Cpassword){
                     alert('Pasword and Confirm Password should be match!')
                 }else{
-                    fetch('http://52.14.114.118/api/api_signup', {
+                    fetch('http://18.221.234.213/api/api_signup', {
                         method: 'POST',
                         headers: {
                             Accept: 'application/json',

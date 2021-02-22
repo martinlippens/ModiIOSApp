@@ -95,7 +95,7 @@ class TimeSet extends Component {
         this.props.BookingDataStore(data)
 console.log(this.state.userInfo.userInfo.u_id)
 
-        fetch('http://52.14.114.118/api/api_bookingstore', {
+        fetch('http://18.221.234.213/api/api_bookingstore', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
