@@ -28,8 +28,9 @@ class Setting extends Component {
         header: null
     }
     constructor(props) {
+        super(props);
+        console.log('userinfo', this.props.userinfo);
 
-        super(props)
         const { user } = this.props.userinfo;
         const { bookinginfo } = this.props.userinfo;
         console.log(bookinginfo)
@@ -98,7 +99,7 @@ class Setting extends Component {
             //onDrawerClose={() => { console.log('Drawer is closed') }}
             //easingFunc={Easing.ease}
             >
-                <ImageBackground style={{ width: '100%', height: '100%', opacity: 0.9 }} source={{ uri: `${this.state.userInfo.userInfo.photo}` }}>
+                <ImageBackground style={{ width: '100%', height: '100%', opacity: 0.9 }} source={{ uri: `${this.state.userInfo.photo}` }}>
                     <LinearGradient
                         colors={['#524552', '#825082']}
                         start={{ x: 0.5, y: 0.0 }}
@@ -110,12 +111,12 @@ class Setting extends Component {
 
                         <View style={styles.body}>
                             <Text style={styles.headerText}>{"Upcoming"}</Text>
-                            <Text style={styles.Welcome}>{`Hey ${this.state.userInfo.userInfo.firstname}, your ${this.state.bookinginfo.CleanType} is coming up!`}</Text>
+                            <Text style={styles.Welcome}>{`Hey ${this.state.userInfo.first_name}, your ${this.state.bookinginfo?.package?.name} is coming up!`}</Text>
 
-                            <Text style={styles.weekName}>{`${moment(this.state.bookinginfo.DateSet, "X").format("dddd")}`}</Text>
+                            <Text style={styles.weekName}>{`${moment(this.state.bookinginfo.scheduled_at, 'YYYY-MM-DD HH:mm:ss').format("dddd")}`}</Text>
 
-                            <Text style={styles.MsgText}>{`Cleaning is scheduled for ${moment(this.state.bookinginfo.DateSet, "X").format("MMM DD")}.`}</Text>
-                            <Text style={styles.MsgText}>{`(between ${this.gettimes(this.state.bookinginfo.TimeName)})`}</Text>
+                            <Text style={styles.MsgText}>{`Cleaning is scheduled for ${moment(this.state.bookinginfo?.scheduled_at, 'YYYY-MM-DD HH:mm:ss').format('Do MMM YYYY at hh A')}.`}</Text>
+                            {/* <Text style={styles.MsgText}>{`(between ${this.gettimes(this.state.bookinginfo.TimeName)})`}</Text> */}
 
                         </View>
                         <TouchableOpacity onPress={() => this.openControlPanel()} style={styles.backIcon}>
@@ -137,7 +138,7 @@ class Setting extends Component {
 
                         <View>
                             <Text style={styles.btn_con}>Book your next cleaning</Text>
-                            <Text style={styles.btn_credit}>You have 1 credit available</Text>
+                            {/* <Text style={styles.btn_credit}>You have 1 credit available</Text> */}
                         </View>
                         <Icon name='ios-arrow-forward' color="rgb(255, 255, 255)" size={25} />
 
@@ -161,7 +162,7 @@ class Setting extends Component {
                         this.props.navigation.navigate("Profile")
                     }}>
                         <View>
-                            <Text style={styles.headerbtn_con}>{`${this.state.userInfo.userInfo.firstname} ${this.state.userInfo.userInfo.lastname}`}</Text>
+                            <Text style={styles.headerbtn_con}>{`${this.state.userInfo.first_name} ${this.state.userInfo.last_name}`}</Text>
                             <Text style={styles.headerbtn_credit}>1 credit available for December</Text>
                         </View>
                         <Icon name='ios-arrow-forward' color="rgb(255, 255, 255)" style={{ marginLeft: 25 }} size={25} />

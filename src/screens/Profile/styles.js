@@ -1,13 +1,18 @@
 import {StyleSheet } from 'react-native';
 import {Dimensions} from 'react-native'
-let {width, height} = Dimensions.get('window')
+
+let { width, height } = Dimensions.get('window');
+
 export default StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'#FFFFFF',
-        paddingTop:100,
-        paddingHorizontal:10
-        
+        // paddingTop:100,
+        // paddingHorizontal:10  
+    },
+    header: {
+        backgroundColor: '#fff',
+        elevation: 0,
     },
     containerModal:{
         flex:1,
@@ -164,18 +169,18 @@ export default StyleSheet.create({
         width:32,
         height:32
     },
-    header: {
-        paddingTop: 30,
-        height: 90,
-        width: width,
-        backgroundColor:'#000',
-        flexDirection: 'row',
-        justifyContent:  'center',
-        alignItems: 'center',
-        marginBottom: 33,
-        borderBottomColor: 'rgba(33,33,33,0.4)',
-        borderBottomWidth:0.5
-    },
+    // header: {
+    //     paddingTop: 30,
+    //     height: 90,
+    //     width: width,
+    //     backgroundColor:'#000',
+    //     flexDirection: 'row',
+    //     justifyContent:  'center',
+    //     alignItems: 'center',
+    //     marginBottom: 33,
+    //     borderBottomColor: 'rgba(33,33,33,0.4)',
+    //     borderBottomWidth:0.5
+    // },
     backIcon: {
         position: 'absolute',
         top:35,

@@ -24,6 +24,7 @@ import moment from 'moment';
 import QS from 'qs';
 import IOSPicker from 'react-native-ios-picker';
 import FastImage from 'react-native-fast-image';
+import HttpClient from '../../utils/HttpClient';
 class Success extends Component {
     static navigationOptions = {
         header: null
@@ -76,14 +77,15 @@ class Success extends Component {
                     
                     <View style={styles.btnT}>
                             <View style={styles.btnTypeView}>
-                                <Image source={this.state.bookinginfo.CleanType==="Basic Cleaning"?require('../../images/deepCleaningPale.png'):require('../../images/basicCleaningPale.png')} style={styles.cleanImag} />
-                                <Text style={styles.typeText}>{this.state.bookinginfo.CleanType}</Text>
-                                <Text style={styles.contentText}>{`${this.state.bookinginfo.TimeName} on ${moment(this.state.bookinginfo.DateSet, "X").format("dddd, MMM DD")},`}</Text>
-                                <Text style={styles.contentText}>{`between ${this.gettimes(this.state.bookinginfo.TimeName)}.`}</Text>
+                                <Image source={{ uri: HttpClient.BASE_URL + '/storage/' + this.state.bookinginfo?.package?.image }} style={styles.cleanImag} />
+                                <Text style={styles.typeText}>{this.state.bookinginfo?.package?.name}</Text>
+                            <Text style={[styles.MsgText, {textAlign: 'center'}]}>{`Cleaning is scheduled for ${moment(this.state.bookinginfo?.scheduled_at, 'YYYY-MM-DD HH:mm:ss').format('Do MMM YYYY [at] hh A')}.`}</Text>
+                                {/* <Text style={styles.contentText}>{`${this.state.bookinginfo?.TimeName} on ${moment(this.state.bookinginfo?.DateSet, "X").format("dddd, MMM DD")},`}</Text> */}
+                                {/* <Text style={styles.contentText}>{`between ${this.gettimes(this.state.bookinginfo?.TimeName)}.`}</Text> */}
                                 <View style={styles.lineView}></View>
                                 <View style={styles.locationView}>
                                     <Image source={require('../../images/mapPin.png')} style={styles.locationIcon} />
-                                    <Text style={styles.contentText}>{`${this.state.userInfo.userInfo.address} Apt.${this.state.userInfo.userInfo.apart_num}`}</Text>
+                                    <Text style={styles.contentText}>{`${this.state.bookinginfo?.address?.street_address} , ${this.state.bookinginfo?.address?.city}`}</Text>
                                 </View>
                             </View>
                     </View>
@@ -138,7 +140,7 @@ class Success extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userinfo: state.userinfo
+        userinfo: state.userinfo,
     }
 }
 const mapDispatchToProps = (dispatch) => {

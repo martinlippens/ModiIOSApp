@@ -6,17 +6,22 @@ import {
     Text,
     View,
     Image,
-    Button,
+    // Button,
     Dimensions,
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Modal
+    Modal,
+    Alert
 } from 'react-native';
+
+import { Appbar, Button } from 'react-native-paper';
 
 import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import HttpClient from '../../utils/HttpClient';
+import { setAuthUser } from '../../utils/Helpers';
 let { width, height } = Dimensions.get('window')
 class Profile extends Component {
     static navigationOptions = {
@@ -26,13 +31,14 @@ class Profile extends Component {
         super(props)
         const userInfo = this.props.userinfo;
         this.state = {
+            isLoading: false,
             userInfo: userInfo,
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            aptNumber: '',
-            complexName: '',
+            firstName: userInfo.first_name,
+            lastName: userInfo.last_name,
+            email: userInfo.email,
+            phone: userInfo.phone,
+            // aptNumber: '',
+            // complexName: '',
         }
     }
 
@@ -46,13 +52,37 @@ class Profile extends Component {
         }
     }
 
-    callSubmitApi = () => {
+    callSubmitApi = async () => {
+        this.setState({ isLoading: true });
+        const { success, data, errors, message } = await HttpClient.put('/customers/' + this.state.userInfo.id, {
+            first_name: this.state.firstName,
+            last_name: this.state.lastName,
+            email: this.state.email,
+            phone: this.state.phone,
+        });
 
+        console.log(data);
+
+        if (success) {
+            await setAuthUser(data);
+            this.props.navigation.goBack();
+        } else {
+            this.setState({ isLoading: false });
+            Alert.alert(message);
+        }
     }
 
     render() {
+        const { navigation } = this.props;
+
         return (
             <View style={styles.container}>
+                <Appbar.Header style={styles.header}>
+                    <Appbar.Action
+                        onPress={_ => navigation.goBack()}
+                        icon={_ => <Image source={require('../../images/back.png')} />}
+                    />
+                </Appbar.Header>
                 <ScrollView style={{ paddingHorizontal: 24 }}>
                     {/* <KeyboardAvoidingView behavior="position" > */}
                     <Image source={require('../../images/black.png')} style={styles.logoimage} />
@@ -145,7 +175,7 @@ class Profile extends Component {
                     }} />
 
                     {/* Apt Number */}
-                    <Text style={[styles.inputTitle, { marginTop: 30 }]}>{"APT NUMBER"}</Text>
+                    {/* <Text style={[styles.inputTitle, { marginTop: 30 }]}>{"APT NUMBER"}</Text>
                     <View style={styles.inputView}>
                         <TextInput
                             onChangeText={(aptNumber) => this.setState({
@@ -157,17 +187,17 @@ class Profile extends Component {
                             style={styles.textInput}
                             placeholder='Apt Number'
                         />
-                    </View>
+                    </View> */}
                     {/* Bottom Border View */}
-                    <View style={{
+                    {/* <View style={{
                         width: '100%',
                         height: 0.5,
                         backgroundColor: '#825082',
                         marginTop: 5
-                    }} />
+                    }} /> */}
 
                     {/* Complex Name */}
-                    <Text style={[styles.inputTitle, { marginTop: 30 }]}>{"COMPLEX NAME"}</Text>
+                    {/* <Text style={[styles.inputTitle, { marginTop: 30 }]}>{"COMPLEX NAME"}</Text>
                     <View style={styles.inputView}>
                         <TextInput
                             onChangeText={(complexName) => this.setState({
@@ -179,16 +209,37 @@ class Profile extends Component {
                             style={styles.textInput}
                             placeholder='Complex Name'
                         />
-                    </View>
+                    </View> */}
                     {/* Bottom Border View */}
-                    <View style={{
+                    {/* <View style={{
                         width: '100%',
                         height: 0.5,
                         backgroundColor: '#825082',
                         marginTop: 5
-                    }} />
+                    }} /> */}
 
-                    <TouchableOpacity
+                    <Button
+                        mode="contained"
+                        full
+                        onPress={this.callSubmitApi}
+                        loading={this.state.isLoading}
+                        disabled={this.state.isLoading}
+                        style={{ 
+                            borderRadius: 30,
+                            marginVertical: 50,
+                        }}
+                        contentStyle={{
+                            backgroundColor: '#825082',
+                            width: width - 48,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            alignSelf: 'center',
+                            paddingVertical: 16,
+                        }}
+                    >
+                        Update
+                    </Button>
+                    {/* <TouchableOpacity
                         onPress={() => {
                             this.callSubmitApi()
                         }}>
@@ -213,12 +264,12 @@ class Profile extends Component {
                                 fontWeight: '400',
                             }}>{'Submit'}</Text>
                         </LinearGradient>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </ScrollView>
                 {/* Back button */}
-                <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={[styles.backIcon, { marginTop: 15 }]}>
+                {/* <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={[styles.backIcon, { marginTop: 15 }]}>
                     <Image source={require('../../images/back.png')} style={styles.meunIcon} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
         )
