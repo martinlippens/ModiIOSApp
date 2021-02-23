@@ -54,6 +54,8 @@ class Setting extends Component {
         this.setState({ drawer: true })
     }
     render() {
+        const { user } = this.props.userinfo;
+
         return (
             <Drawer
                 ref={(ref) => this._drawer = ref}
@@ -79,16 +81,16 @@ class Setting extends Component {
                         <Image source={require('../../images/grey.png')} style={styles.meunIcon} />
                     </TouchableOpacity>
                     <View style={styles.body}>
-                        <HexagoneImag imageUrl={this.state.userInfo.userInfo.photo} />
-                        {/* <Image source={{uri: `data:image/jpg;base64,${this.state.userInfo.photos}`}} style={{width:300,height:350,resizeMode:'stretch'}} /> */}
+                        <HexagoneImag imageUrl={user.photo} />
+                        {/* <Image source={{uri: `data:image/jpg;base64,${user.photos}`}} style={{width:300,height:350,resizeMode:'stretch'}} /> */}
                     </View>
                     <View style={styles.logoView}>
-                        <Text style={styles.logoText}>{`${this.state.userInfo.userInfo.complex_name.toUpperCase()} & SKYDECK`}</Text>
+                        {/* <Text style={styles.logoText}>{`${user.complex_name?.toUpperCase()} & SKYDECK`}</Text> */}
                     </View>
                     <View style={styles.body}>
-                        <Text style={[styles.Welcome,{marginTop:30}]}>{"Hi " + this.state.userInfo.userInfo.firstname + "!"}</Text>
+                        <Text style={[styles.Welcome,{marginTop:30}]}>{"Hi " + user.first_name + "!"}</Text>
                         <Text style={styles.Welcome}>{"Welcome to Modi!"}</Text>
-                        <Text style={styles.MsgText}>{`Our records show that you live in Apt ${this.state.userInfo.userInfo.apart_num}`}</Text>
+                        {/* <Text style={styles.MsgText}>{`Our records show that you live in Apt ${user.apart_num}`}</Text> */}
                         <TouchableOpacity style={styles.btn_view} onPress={() => this.Login()}>
                             <Text style={styles.btn_con}>Great, Let's continue </Text>
                             <Icon name='ios-arrow-forward' color="rgb(0, 140, 223)" size={25} />
@@ -99,6 +101,8 @@ class Setting extends Component {
         )
     }
     drawerContent() {
+        const { user } = this.props.userinfo;
+
         return (
             <View style={styles.drawerContent} >
                 <LinearGradient
@@ -113,8 +117,8 @@ class Setting extends Component {
                         this.props.navigation.navigate("Profile")
                     }}>
                         <View>
-                            <Text style={styles.headerbtn_con}>{`${this.state.userInfo.userInfo.firstname} ${this.state.userInfo.userInfo.lastname}`}</Text>
-                            <Text style={styles.headerbtn_credit}>1 credit available for December</Text>
+                            <Text style={styles.headerbtn_con}>{`${user.first_name} ${user.last_name}`}</Text>
+                            <Text style={styles.headerbtn_credit}>1 credit available for February</Text>
                         </View>
                         <Icon name='ios-arrow-forward' color="rgb(255, 255, 255)" style={{ marginLeft: 25 }} size={25} />
                     </TouchableOpacity>
@@ -172,8 +176,8 @@ class Setting extends Component {
                     
                     <Text style={styles.headerTitle}>MODI</Text>
                     <View style={styles.BottomBorder} />
-                    <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: 'bold', marginTop: 15, color: 'black', marginLeft: 12 }}>{this.state.userInfo.userInfo.firstname + " " + this.state.userInfo.userInfo.lastname}</Text>
-                    <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: '300', marginTop: 5, color: '#333', marginLeft: 12, marginBottom: 15 }}>{this.state.userInfo.userInfo.email}</Text>
+                    <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: 'bold', marginTop: 15, color: 'black', marginLeft: 12 }}>{user.first_name + " " + user.last_name}</Text>
+                    <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: '300', marginTop: 5, color: '#333', marginLeft: 12, marginBottom: 15 }}>{user.email}</Text>
                     <View style={styles.BottomBorder} />
                     <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: 'bold', marginVertical: 10, color: 'black', marginLeft: 12 }}>1 Credit for</Text>
                     <Text style={{ fontSize: 14, fontFamily: 'Symbol', fontWeight: 'bold', marginVertical: 10, color: 'black', marginLeft: 12 }}>October remaining</Text>

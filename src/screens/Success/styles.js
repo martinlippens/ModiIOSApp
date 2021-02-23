@@ -71,7 +71,9 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'rgb(255,255,255)',
         marginBottom:30,
-        borderRadius:5
+        borderRadius: 5,
+        padding: 20,
+        alignItems: 'center',
     },
     cleanImag: {
         marginTop: 30,

@@ -14,7 +14,8 @@ import {
     ScrollView,
     ActivityIndicator,
     TouchableHighlight,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert
 } from 'react-native';
 
 import styles from './styles';
@@ -27,6 +28,7 @@ import IOSPicker from 'react-native-ios-picker';
 import FastImage from 'react-native-fast-image';
 import CalendarPicker from 'react-native-calendar-picker';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+import HttpClient from '../../utils/HttpClient';
 
 
 const cleanOption = [
@@ -69,21 +71,25 @@ class DateSet extends Component {
                 {
                     name: "Morning",
                     time: "8 AM - 10 AM",
+                    hours: "08:00:00",
                     image: require('../../images/1Morning.png')
                 },
                 {
                     name: "Late Morning",
                     time: "10 AM - 12 PM",
+                    hours: "10:00:00",
                     image: require("../../images/2LateMorning.png")
                 },
                 {
                     name: "Afternoon",
                     time: "12 PM - 2 PM",
+                    hours: "12:00:00",
                     image: require("../../images/3Afternoon.png")
                 },
                 {
                     name: "Late Afternoon",
                     time: "2 PM - 4 PM",
+                    hours: "14:00:00",
                     image: require("../../images/LateAfternoon.png")
                 }
             ],
@@ -101,7 +107,8 @@ class DateSet extends Component {
     onDateChange(date) {
         console.log(date)
         //this.setState({ chosenDate: moment(date).format("X"), menuActive: 2 });
-        this.setState({ chosenDate: moment(date).format("X") });
+        // this.setState({ chosenDate: moment(date).format("X") });
+        this.setState({ chosenDate: moment(date).format("YYYY-MM-DD") });
     }
     _renderItem = ({ item, index }) => {
         return (
@@ -117,9 +124,11 @@ class DateSet extends Component {
 
     }
     render() {
+        const { navigation: { state: { params: { _package } } } } = this.props;
+
         return (
             <View style={styles.container}>
-                <Text style={styles.headerTitle}>{this.state.bookingdata.CleanType}</Text>
+                <Text style={styles.headerTitle}>{_package?.name}</Text>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Setting')} style={styles.CloseIcon}>
                     <Icon name='md-close' size={35} color='rgb(151, 151, 151)' />
                 </TouchableOpacity>
@@ -250,7 +259,7 @@ class DateSet extends Component {
                                 this.state.menuActive == 3 ?
                                     <View>
                                         {
-                                            this.state.bookingdata.CleanType == 'Deep Cleaning' ?
+                                            this.state.bookingdata?.CleanType == 'Deep Cleaning' ?
                                                 <View>
                                                     <Text style={styles.detailTitle}>Select 2 appliances to clean:</Text>
                                                     <View style={styles.detailView}>
@@ -325,7 +334,7 @@ class DateSet extends Component {
         extras.push(type)
         this.setState({ extra: extras });
     }
-    submitBtn() {
+    async submitBtn() {
         if (this.state.chosenDate === null) {
             alert("please select date")
             return
@@ -338,7 +347,8 @@ class DateSet extends Component {
 
         var TimeName = this.state.cleanTimes[this.state.activeSlide].name
         this.setState({ TimeName: TimeName })
-        let data = this.state.bookingdata
+        console.log('state data', this.state.bookingdata);
+        let data =  {} //this.state.bookingdata
         data.DateSet = this.state.chosenDate
         data.TimeName = TimeName
         data.cleanSetTimes = this.state.cleanSetTimes
@@ -348,34 +358,56 @@ class DateSet extends Component {
         if(cleanerMsg === ""){
             cleanerMsg = "-";
         }
+
+        const { userinfo: { user }, navigation: { state: { params: { _package } } } } = this.props;
+        console.log('booking data', data, user);
+
+        const { success, data: booking, errors, message } = await HttpClient.post(`/customers/${user?.id}/bookings`, {
+            address_id: 1,
+            package_id: _package.id,
+            scheduled_at: this.state.chosenDate + ' ' + this.state.cleanTimes[this.state.activeSlide].hours,
+            note: cleanerMsg,
+            subtotal: _package.price,
+            tax: 0,
+            total_price: _package.price,
+        });
+
+        console.log(success, booking, errors, message);
+
+        if (success) {
+             this.props.BookingInfoStore(booking);
+            this.props.navigation.navigate('Success');
+        } else {
+            Alert.alert(message);
+        }
         
-        fetch('http://18.221.234.213/api/api_bookingstore', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.state.userInfo.token}`,
-            },
-            body: JSON.stringify({
-                userID: this.state.userInfo.userInfo.u_id,
-                CleanType: data.CleanType,
-                Extra: JSON.stringify(this.state.extra),
-                DateSet: this.state.chosenDate,
-                TimeSet: TimeName,
-                cleanerMsg: cleanerMsg
-            }),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.warn('BOOKING_RESPONSE',responseJson)
-                if (responseJson.flag === "success") {
-                    this.props.BookingInfoStore(data);
-                    this.props.navigation.navigate('Success');
-                }
-            })
-            .catch((error) => {
-                alert(error);
-            });
+        // fetch('http://18.221.234.213/api/api_bookingstore', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //         Authorization: `Bearer ${this.state.userInfo.token}`,
+        //     },
+        //     body: JSON.stringify({
+        //         userID: this.state.userInfo.userInfo.u_id,
+        //         CleanType: data.CleanType,
+        //         Extra: JSON.stringify(this.state.extra),
+        //         DateSet: this.state.chosenDate,
+        //         TimeSet: TimeName,
+        //         cleanerMsg: cleanerMsg
+        //     }),
+        // })
+        //     .then((response) => response.json())
+        //     .then((responseJson) => {
+        //         console.warn('BOOKING_RESPONSE',responseJson)
+        //         if (responseJson.flag === "success") {
+        //             this.props.BookingInfoStore(data);
+        //             this.props.navigation.navigate('Success');
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         alert(error);
+        //     });
 
 
     }

@@ -19,6 +19,7 @@ import Password from './screens/Login/password';
 import Setting from './screens/Setting';
 import Upcoming from './screens/Upcoming';
 import Service from './screens/Service';
+import ServiceDetails from './screens/ServiceDetails';
 import Extras from './screens/Extras';
 import DeepDetail from './screens/Extras/DeepDetail';
 import BasicDetail from './screens/Extras/BasicDetail';
@@ -85,7 +86,8 @@ const AppScreen = createStackNavigator({
         Password: {screen: Password},
         Setting: {screen: Setting},
         Upcoming: {screen: Upcoming},
-        Service: {screen: Service},
+        Service: { screen: Service },
+        ServiceDetails: { screen: ServiceDetails },
         Extras: {screen: Extras},
         DeepDetail: {screen: DeepDetail},
         DateSet: {screen: DateSet},

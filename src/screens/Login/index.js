@@ -20,6 +20,8 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/button';
 import Swiper from 'react-native-swiper';
+import HttpClient from '../../utils/HttpClient';
+import { getDeviceId, setApiToken, setAuthUser } from '../../utils/Helpers';
 class Login extends Component {
     static navigationOptions = {
         header: null
@@ -106,7 +108,7 @@ class Login extends Component {
                 {
                     !this.state.loginVaid?
                     <View>
-                        <Text  style={styles.validView}>The password doesn't match this account</Text>
+                        <Text style={styles.validView}>{this.state.errorMessage}</Text>
                     </View>:null
                 }               
                 <Text onPress={() => this.props.navigation.navigate('Forgot')} style={styles.forgot}>Forgot?</Text>
@@ -186,42 +188,66 @@ class Login extends Component {
     Signup(){
         this.props.navigation.navigate('Address');
     }
-    Login() {
+    async Login() {
         // this.setState({validStart: true})
         // if(this.state.emailValid||this.state.passwordValid) return
         console.log(this.state.email, this.state.password)
 
-        fetch('http://18.221.234.213/api/api_login', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password
-            }),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson)
-                if (responseJson.flag === "success") {
-                    AsyncStorage.setItem('email', this.state.email, () => { });
-                    AsyncStorage.setItem('password', this.state.password, () => { });
-                    this.props.formDataStor(responseJson.data);
-                    this.props.BookingInfoStore(responseJson.bookingInfo);
-                    if (responseJson.bookingInfo!=null)
-                        this.props.navigation.navigate('Upcoming');
-                    else
-                        this.props.navigation.navigate('Setting');
-                }
-                else {
-                    this.setState({ loginVaid: false })
-                }
-            })
-            .catch((error) => {
-                alert(error);
+        const { success, data, errors, message } = await HttpClient.post('/login', {
+            email: this.state.email,
+            password: this.state.password,
+            device_id: getDeviceId(),
+        });
+
+        if (success) {
+            this.props.formDataStor(data.user);
+            await setAuthUser(data.user);
+            await setApiToken(data.access_token);
+            AsyncStorage.setItem('email', this.state.email, () => { });
+            AsyncStorage.setItem('password', this.state.password, () => { });
+            // this.props.BookingInfoStore(responseJson.bookingInfo);
+            // this.props.navigation.navigate('Upcoming');
+            this.props.navigation.navigate('Setting');
+        } else {
+            this.setState({
+                loginVaid: false,
+                errorMessage: message,
             });
+        }
+
+        console.log('New api response');
+
+        // fetch('http://18.221.234.213/api/api_login', {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         email: this.state.email,
+        //         password: this.state.password
+        //     }),
+        // })
+        //     .then((response) => response.json())
+        //     .then((responseJson) => {
+        //         console.log(responseJson)
+        //         if (responseJson.flag === "success") {
+        //             AsyncStorage.setItem('email', this.state.email, () => { });
+        //             AsyncStorage.setItem('password', this.state.password, () => { });
+        //             this.props.formDataStor(responseJson.data);
+        //             this.props.BookingInfoStore(responseJson.bookingInfo);
+        //             if (responseJson.bookingInfo!=null)
+        //                 this.props.navigation.navigate('Upcoming');
+        //             else
+        //                 this.props.navigation.navigate('Setting');
+        //         }
+        //         else {
+        //             this.setState({ loginVaid: false })
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         alert(error);
+        //     });
 
     }
     email(email) {
