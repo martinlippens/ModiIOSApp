@@ -52,7 +52,8 @@ class Help extends Component {
         }else if (this.state.comment === ''){
             alert('Please enter comment.')
         }else{
-            alert('Api hit')
+            alert('Submitted');
+            this.props.navigation.goBack();
         }
     }
 
