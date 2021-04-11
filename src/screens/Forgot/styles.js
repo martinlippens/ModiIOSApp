@@ -35,6 +35,7 @@ export default StyleSheet.create({
         flexDirection: 'row',
     },
     textInput: {
+        backgroundColor: 'transparent',
         width: width-76,
         fontSize: 14,
         color: 'rgb(0, 18, 11)',

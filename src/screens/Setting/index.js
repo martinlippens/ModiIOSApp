@@ -150,14 +150,14 @@ class Setting extends Component {
                     this.props.navigation.navigate("Setting")}}>
                         <Text style={styles.menuText}>Setting</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.menuView]}
+                    {/* <TouchableOpacity style={[styles.menuView]}
                     onPress={() =>
                         { 
                             this._drawer.close()
                             this.props.navigation.navigate('Password')}
                         }>
                         <Text style={styles.menuText}>Password</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity style={[styles.menuView]}
                     onPress={() =>
                         {  

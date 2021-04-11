@@ -12,7 +12,8 @@ import {
     Modal,
     ActivityIndicator,
     ScrollView,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,6 +21,8 @@ import styles from './styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Button from '../../components/button';
 import Swiper from 'react-native-swiper';
+import HttpClient from '../../utils/HttpClient';
+
 class Login extends Component {
     static navigationOptions = {
         header: null
@@ -62,23 +65,23 @@ class Login extends Component {
 
         }
     }
-    componentWillMount() {
-        fetch('http://18.221.234.213/api/api_complexlist', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log(responseJson)
-                this.setState({complex_lists:responseJson.data});                
-            })
-            .catch((error) => {
-                alert(error);
-            });
-    }
+    // componentWillMount() {
+    //     fetch('http://18.221.234.213/api/api_complexlist', {
+    //         method: 'POST',
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json',
+    //         },
+    //     })
+    //         .then((response) => response.json())
+    //         .then((responseJson) => {
+    //             console.log(responseJson)
+    //             this.setState({complex_lists:responseJson.data});                
+    //         })
+    //         .catch((error) => {
+    //             alert(error);
+    //         });
+    // }
     DriverModalVisible(visible) {
         this.setState({ DriverModalVisible: visible })
     }
@@ -99,8 +102,8 @@ class Login extends Component {
                             {/* <Image source={require('../../images/black.png')} style={styles.logoimage} /> */}
                             {/* <Text style={styles.pageInfo}>Create Profile</Text> */}
                         </View>
-                <ScrollView style={{ paddingHorizontal: 24 }}>
-                        <Text style={styles.PageTitle}>Personal Information:</Text>
+                <ScrollView style={{ paddingHorizontal: 24 }} keyboardShouldPersistTaps="handled">
+                        {/* <Text style={styles.PageTitle}>Personal Information:</Text> */}
 
                         <View style={styles.inputTwoView}>
                             <View>
@@ -139,6 +142,7 @@ class Login extends Component {
                                 value={this.state.email}
                                 style={styles.textInput}
                                 placeholder='Email Address'
+                                autoCapitalize="none"
                             />
                         </View>
                          
@@ -154,7 +158,7 @@ class Login extends Component {
                                 placeholder='Phone Number'
                             />
                         </View>
-                        <Text style={styles.inputTitle}>{this.state.unit === "" ? "" : "Apt Number"}</Text>
+                        {/* <Text style={styles.inputTitle}>{this.state.unit === "" ? "" : "Apt Number"}</Text>
                         <View style={this.state.unitValid || !this.state.loginVaid ? styles.inputView : styles.ErrorinputView}>
                             <TextInput
                                 onChangeText={(unit) => this.unit(unit)}
@@ -175,7 +179,7 @@ class Login extends Component {
                                 <Text style={[styles.textInput,{color:'#c7c7cd'}]}>{"Complex Name"}</Text>
                             } 
                         </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         
                         <Text style={styles.inputTitle}>{this.state.password === "" ? "" : "Password"}</Text>
                         <View style={this.state.passwordValid || !this.state.loginVaid ?styles.inputView:styles.ErrorinputView}>
@@ -245,51 +249,40 @@ class Login extends Component {
             </View>
         )
     }
-    continue() {
-        if( this.state.firstnameValid && this.state.lastnameValid && this.state.phoneValid &&
-            this.state.unitValid && this.state.complexValid && this.state.emailValid){
-                this.setState({ loginVaid: true })
-                if(this.state.password == '' && this.state.Cpassword == ''){
-                    alert('Input Error!')
-                }else if (this.state.password.length < 6) {
-                    alert('Password must be at least 6 character')
-                }else if(this.state.password != this.state.Cpassword){
-                    alert('Pasword and Confirm Password should be match!')
-                }else{
-                    fetch('http://18.221.234.213/api/api_signup', {
-                        method: 'POST',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            email: this.state.email,
-                            firstname: this.state.firstname,
-                            lastname: this.state.lastname,
-                            phone: this.state.phone,
-                            complex_id: this.state.complex_id,
-                            apart_num: this.state.unit,
-                            password: this.state.password,
-                        }),
-                    })
-                        .then((response) => response.json())
-                        .then((responseJson) => {
-                            console.log(responseJson)
-                            // this.setState({ modalVisible: true })
-                            // setTimeout(this.Goupcoimg, 3000)
-                            if(responseJson.data==="success"){
-                                this.props.navigation.navigate('Login');
-                            }
-                            if(responseJson.data==="failure"){
-                                alert('Email exist aleady!')
-                            }
-                        })
-                        .catch((error) => {
-                            alert(error);
-                        });
+    async continue() {
+        const { navigation } = this.props;
+
+        if( this.state.firstnameValid && this.state.lastnameValid && this.state.phoneValid && this.state.emailValid){
+            this.setState({ loginVaid: true })
+            if(this.state.password == '' && this.state.Cpassword == ''){
+                alert('Input Error!')
+            }else if (this.state.password.length < 6) {
+                alert('Password must be at least 6 character')
+            }else if(this.state.password != this.state.Cpassword){
+                alert('Pasword and Confirm Password should match!')
+            } else {
+                
+                const apiReponse = await HttpClient.post('/register', {
+                    first_name: this.state.firstname,
+                    last_name: this.state.lastname,
+                    phone: this.state.phone,
+                    email: this.state.email,
+                    password: this.state.password,
+                    password_confirmation: this.state.Cpassword,
+                    role: 3,
+                });
+
+                console.log(apiReponse);
+
+                if (apiReponse.success) {
+                    Alert.alert('Success', apiReponse.message);
+                    navigation.replace('Login');
+                } else {
+                    Alert.alert('Error', apiReponse.message);
                 }
+            }
         
-        }else{
+        } else {
             alert("Input Error!")
             this.setState({ loginVaid: true })
         }
