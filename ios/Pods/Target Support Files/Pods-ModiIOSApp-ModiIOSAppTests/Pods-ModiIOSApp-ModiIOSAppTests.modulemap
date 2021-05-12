@@ -1,6 +1,0 @@
-module Pods_ModiIOSApp_ModiIOSAppTests {
-  umbrella header "Pods-ModiIOSApp-ModiIOSAppTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

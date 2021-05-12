@@ -4,11 +4,9 @@ import RNAsyncStorage from '@react-native-async-storage/async-storage';
 class AsyncStorage {
   async get(key) {
     let value = await RNAsyncStorage.getItem(key);
-
     if (value) {
       value = JSON.parse(value);
     }
-
     return value;
   }
 

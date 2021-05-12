@@ -1,6 +1,0 @@
-module Pods_ModiIOSApp {
-  umbrella header "Pods-ModiIOSApp-umbrella.h"
-
-  export *
-  module * { export * }
-}

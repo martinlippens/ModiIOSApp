@@ -1,4 +1,3 @@
-import store from "../../store";
 import Storage from "./Storage";
 
 export function getDeviceId() {
@@ -14,13 +13,17 @@ export async function setApiToken(token) {
 }
 
 export async function getAuthUser() {
-  await Storage.get('user'); 
+  return await Storage.get('user');
 }
 
 export async function setAuthUser(user) {
-  await Storage.set('user', user); 
-  store.dispatch({
-     type: 'info_store',
-      value: user
-  });
+  return await Storage.set('user', user);
+}
+
+export async function removeAuthUser() {
+  return await Storage.remove('user');
+}
+
+export async function removeApiToken() {
+  return await Storage.remove('accessToken');
 }
